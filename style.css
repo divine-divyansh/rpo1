@@ -1,0 +1,355 @@
+/* Romantic theme styling */
+body {
+  margin: 0;
+  height: 100vh;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #ffe6f2, #ffccff);
+  font-family: 'Dancing Script', cursive;
+  position: relative;
+}
+
+.container {
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+  text-align: center;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.main-title {
+  color: #d23c77;
+  font-size: 3.5em;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  transform: rotate(-2deg);
+  animation: titleFloat 3s ease-in-out infinite alternate;
+}
+
+.interactive-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.gift-box {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(210, 60, 119, 0.2);
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.gift-box:hover {
+  transform: translateY(-5px);
+}
+
+.ribbon {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  width: 40px;
+  height: 80px;
+  background: #ff66b3;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+}
+
+.gift-button, .memory-button, .magic-button, .surprise-button {
+  background: linear-gradient(45deg, #ff66b3, #d23c77);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Pacifico', cursive;
+  margin: 0.5rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.gift-message, .memory-text {
+  display: none;
+  margin-top: 1rem;
+  font-size: 1.3em;
+  color: #d23c77;
+  animation: fadeIn 0.5s forwards;
+}
+.surprise-button {
+  background: linear-gradient(45deg, #ff6b6b, #ffa3a3);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 1rem auto;
+  display: block;
+  font-family: 'Dancing Script', cursive;
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+}
+
+.surprise-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
+}
+
+.surprise-container {
+  min-height: 100px;
+  margin: 1rem auto;
+  padding: 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  animation: fadeIn 0.5s forwards;
+}
+
+.surprise-item {
+  font-size: 1.3em;
+  color: #d23c77;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #f00;
+  border-radius: 50%;
+  animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+.secret-message {
+  background: linear-gradient(45deg, #ff66b3, #d23c77);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(210, 60, 119, 0.3);
+  margin: 2rem auto;
+  color: white;
+  grid-column: 1 / -1;
+}
+
+.hidden-message {
+  display: none;
+  line-height: 1.8;
+}
+
+.polaroid-frame {
+  background: white;
+  padding: 1rem 1rem 3rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transform: rotate(5deg);
+  width: 250px;
+  margin: 2rem auto;
+  grid-column: 1 / -1;
+}
+
+.polaroid-img {
+  height: 200px;
+  background: #f0f0f0;
+  margin-bottom: 1rem;
+  background-size: cover;
+  background-position: center;
+}
+
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes titleFloat {
+  from { transform: rotate(-2deg) translateY(0); }
+  to { transform: rotate(-2deg) translateY(-10px); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+/* Heart elements */
+.heart {
+  position: absolute;
+  color: #ff3366;
+  animation: float 6s infinite;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  font-size: 24px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .main-title { font-size: 2.5em; }
+  .interactive-section { grid-template-columns: 1fr; }
+}
+
+/* Things to Know Button Styling */
+.know-button {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1.3em;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 1.5rem auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Dancing Script', cursive;
+  box-shadow: 0 5px 15px rgba(254, 152, 156, 0.4);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.know-button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(252, 156, 160, 0.6);
+}
+
+.know-button:active {
+  transform: translateY(1px);
+}
+
+.know-button .heart-icon, 
+.know-button .sparkle {
+  display: inline-block;
+  transition: all 0.3s;
+}
+
+.know-button:hover .heart-icon {
+  transform: scale(1.3) rotate(15deg);
+}
+
+.know-button:hover .sparkle {
+  transform: scale(1.5);
+  filter: brightness(1.5);
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.know-button.pulse {
+  animation: pulse 0.5s ease;
+}
+
+/* Know container styling */
+.know-container {
+  min-height: 100px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,236,240,0.9) 100%);
+  display: block; /* Changed from 'none' to 'block' */
+  opacity: 0.3; /* Semi-transparent when empty */
+  transition: opacity 0.4s ease; /* Smooth transition when showing messages */
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,192,203,0.5);
+  max-width: 80%;
+  position: relative;
+}
+.placeholder-text {
+  color: rgba(210, 60, 119, 0.7); /* More vibrant pink */
+  text-align: center;
+  font-style: italic;
+  margin-top: 35px;
+  font-size: 1.2em;
+  text-shadow: 0 0 5px rgba(255,255,255,0.5); /* Soft glow */
+  font-family: 'Pacifico', cursive; /* Matches button font */
+}
+.know-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+  border-radius: 15px 15px 0 0;
+}
+
+.know-item {
+  font-size: 1.3em;
+  color: #d23c77;
+  margin: 0.5rem 0;
+  text-align: center;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Floating petal effect */
+.petal {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  z-index: -1;
+  animation: floatPetal linear infinite;
+}
+
+@keyframes floatPetal {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+.poetic-message {
+  text-align: center;
+  line-height: 1.8;
+  color: #d23c77;
+}
+
+.poetic-message p {
+  margin: 0.3rem 0;
+  font-size: 1.2em;
+}
+
+.message-title {
+  font-weight: bold;
+  font-size: 1.4em !important;
+  margin-bottom: 0.8rem !important;
+  color: #ff3366;
+}
+
+.signature {
+  font-style: italic;
+  margin-top: 1rem !important;
+  color: #f97474;
+}
