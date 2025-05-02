@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Miss Mukherjee 🌸</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -37,7 +37,7 @@
 <div class="surprise-container" id="surpriseContainer"></div>
             
             <div class="secret-message">
-                <p class="hidden-message">The way your eyes sparkle when you talk about your passions,
+                <p class="hidden-message">The way your eyes sparkle when you listen to class lectures,
                   The way you tuck your hair behind your ear when you're shy,
                   The way you make ordinary moments extraordinary -
                   These are the things I notice when no one's watching.<br>
@@ -51,12 +51,59 @@
                   your glimpe is forever saved in my memory.</p>
             </div>
         </div>
+
+        <!-- Virtual Diary -->
+        <div class="diary-section">
+            <h2 class="section-title">Our Daily Moments 📖</h2>
+            <div class="diary-entry">
+                <button class="diary-button" id="diaryBtn">Open Today's Entry</button>
+                <div class="diary-content" id="diaryContent">
+                    <div class="entry-text">
+                        <p>Today in class, your smile brightened up the room</p>
+                        <p>Your graceful presence made my heart bloom</p>
+                        <p>Every lecture feels like a sweet melody</p>
+                        <p>When you're there, sharing the same space with me</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wish Fountain -->
+        <div class="fountain-section">
+            <h2 class="section-title">Wish Fountain 🌊</h2>
+            <div class="fountain" id="fountain">
+                <button class="fountain-button" id="makeWishBtn">Make a Wish</button>
+                <div class="wishes-container" id="wishesContainer"></div>
+            </div>
+        </div>
+
+        <!-- Mood Board -->
+        <div class="mood-board">
+            <h2 class="section-title">Today's Mood 🎨</h2>
+            <div class="mood-grid" id="moodGrid">
+                <div class="mood-tile" data-mood="happy">Joy</div>
+                <div class="mood-tile" data-mood="peaceful">Peace</div>
+                <div class="mood-tile" data-mood="dreamy">Dreams</div>
+                <div class="mood-tile" data-mood="loving">Love</div>
+            </div>
+        </div>
+
+        <!-- Virtual Garden -->
+        <div class="garden-section">
+            <h2 class="section-title">Our Growing Garden 🌺</h2>
+            <div class="garden" id="garden">
+                <button class="garden-button" id="plantFlowerBtn">Plant a Flower</button>
+                <div class="flowers-container" id="flowersContainer"></div>
+            </div>
+        </div>
         
-        <div class="music-player">
-            <button id="musicBtn">Play Music 🎵</button>
-            <audio id="bgMusic" loop>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-            </audio>
+        <div class="song-info">
+            <div class="song-details">
+                <span class="song-name">Tera Hone Laga Hoon</span>
+                <span class="artist-name">by Atif Aslam</span>
+            </div>
+            <button id="muteBtn" class="mute-button">🔊</button>
+            </script>
         </div>
     </div>
 
@@ -68,6 +115,11 @@
     
     <div class="know-container" id="knowContainer" style="display: block; opacity: 0.3;">
       <div class="placeholder-text">Click "Things To Know" to reveal special messages</div>
+    </div>
+
+    <div class="footer">
+        <p>Made with love and a sprinkle of magic! ✨</p>
+        <p>For Miss Mukherjee, from your secret admirer 💖</p>
     </div>
     <script src="script.js"></script>
 </body>

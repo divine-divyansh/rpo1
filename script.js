@@ -1,313 +1,452 @@
+
+// Add loading animation
+const loading = document.createElement('div');
+loading.className = 'loading';
+document.body.appendChild(loading);
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize elements
-    const giftButtons = document.querySelectorAll('.gift-button');
-    const memoryButtons = document.querySelectorAll('.memory-button');
-    const mainButton = document.getElementById('mainButton');
-    const surpriseBtn = document.getElementById('surpriseBtn');
-    const musicBtn = document.getElementById('musicBtn');
-    const bgMusic = document.getElementById('bgMusic');
-    
-    // Create floating elements
-    function createFloatingElement(emoji) {
-        const element = document.createElement('div');
-        element.innerHTML = emoji;
-        element.className = 'heart';
-        element.style.left = Math.random() * window.innerWidth + 'px';
-        element.style.top = (window.innerHeight + 50) + 'px';
-        element.style.fontSize = (Math.random() * 20 + 15) + 'px';
-        element.style.animationDuration = (Math.random() * 4 + 4) + 's';
-        element.style.animationDelay = Math.random() * 2 + 's';
-        document.body.appendChild(element);
+    // Remove loading screen after content loads
+    setTimeout(() => {
+        loading.classList.add('fade-out');
+        setTimeout(() => loading.remove(), 500);
+    }, 1500);
+    // Add section dividers
+    const sections = document.querySelectorAll('.interactive-section, .diary-section, .fountain-section, .mood-board, .garden-section');
+    sections.forEach(section => {
+        const divider = document.createElement('div');
+        divider.className = 'section-divider';
+        section.parentNode.insertBefore(divider, section.nextSibling);
+    });
+
+    // Create floating rose petals
+    function createRosePetals() {
+        const petal = document.createElement('div');
+        petal.className = 'rose-petal';
+        petal.style.left = Math.random() * window.innerWidth + 'px';
+        petal.style.animationDuration = (Math.random() * 5 + 8) + 's';
+        petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(petal);
         
-        setTimeout(() => element.remove(), 6000);
+        setTimeout(() => petal.remove(), 10000);
     }
 
-    // Gift box functionality
-    giftButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const giftBox = this.parentElement;
-            const message = giftBox.querySelector('.gift-message');
-            
-            // Animate gift opening
-            this.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-                message.style.display = 'block';
-                
-                // Create celebration effect
-                for (let i = 0; i < 20; i++) {
-                    setTimeout(() => {
-                        createFloatingElement(['💝', '🌸', '✨', '🎀'][Math.floor(Math.random() * 4)]);
-                    }, i * 100);
-                }
-            }, 300);
-            
-            // Disable button after opening
-            this.disabled = true;
-            this.textContent = 'Opened!';
+    // Create rose petals periodically
+    setInterval(createRosePetals, 3000);
+    // Create initial batch of petals
+    for(let i = 0; i < 5; i++) {
+        setTimeout(createRosePetals, i * 500);
+    }
+
+    // Audio Controls
+
+    // Initialize all interactive elements
+    const gift1 = document.getElementById('gift1');
+    const gift2 = document.getElementById('gift2');
+    const memory1 = document.getElementById('memory1');
+    const mainButton = document.getElementById('mainButton');
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const surpriseContainer = document.getElementById('surpriseContainer');
+    const diaryBtn = document.getElementById('diaryBtn');
+    const diaryContent = document.getElementById('diaryContent');
+    const knowBtn = document.getElementById('knowBtn');
+    const knowContainer = document.getElementById('knowContainer');
+    const makeWishBtn = document.getElementById('makeWishBtn');
+    const wishesContainer = document.getElementById('wishesContainer');
+    const plantFlowerBtn = document.getElementById('plantFlowerBtn');
+    const flowersContainer = document.getElementById('flowersContainer');
+
+    // Gift box interactions
+    function setupGiftBox(giftBox) {
+        const button = giftBox.querySelector('.gift-button');
+        const message = giftBox.querySelector('.gift-message');
+        
+        button.addEventListener('click', () => {
+            message.classList.toggle('show');
         });
+    }
+
+    setupGiftBox(gift1);
+    setupGiftBox(gift2);
+
+    // Memory interaction
+    const memoryButton = memory1.querySelector('.memory-button');
+    const memoryText = memory1.querySelector('.memory-text');
+    
+    memoryButton.addEventListener('click', () => {
+        memoryText.classList.toggle('show');
     });
 
-    // Memory lane functionality
-    memoryButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const memory = this.parentElement;
-            const memoryText = memory.querySelector('.memory-text');
-            
-            memoryText.style.display = 'block';
-            this.textContent = 'Hover Here';
-            
-            // Add hover effect
-            memory.addEventListener('mouseover', () => {
-                memory.style.backgroundColor = 'rgba(255, 182, 193, 0.3)';
-                memory.style.transform = 'scale(1.02)';
-                createFloatingElement('💭');
-            });
-            
-            memory.addEventListener('mouseout', () => {
-                memory.style.backgroundColor = '';
-                memory.style.transform = '';
-            });
-        });
-    });
-
-    // Main button functionality
-    mainButton.addEventListener('click', function() {
-        document.querySelector('.hidden-message').style.display = 'block';
-        
-        // Create romantic effect
-        for (let i = 0; i < 30; i++) {
-            setTimeout(() => {
-                createFloatingElement(['💖', '🌹', '🌟', '🥰'][Math.floor(Math.random() * 4)]);
-            }, i * 80);
-        }
-        
-        // Add pulsing animation
-        this.classList.add('pulse');
-        setTimeout(() => this.classList.remove('pulse'), 1000);
+    // Special message button
+    mainButton.addEventListener('click', () => {
+        const message = document.querySelector('.secret-message .hidden-message');
+        message.style.display = 'block';
     });
 
     // Surprise button functionality
-    surpriseBtn.addEventListener('click', function() {
-        // Create different emoji burst
-        for (let i = 0; i < 40; i++) {
+    surpriseBtn.addEventListener('click', () => {
+        const surprises = [
+            "Every time I see you, my heart skips a beat 💓",
+            "Your smile lights up my world ✨",
+            "You make every moment special 🌟",
+            "Just thinking about you makes me smile 😊"
+        ];
+        
+        surpriseContainer.style.display = 'block';
+        const surprise = surprises[Math.floor(Math.random() * surprises.length)];
+        surpriseContainer.innerHTML = `<div class="surprise-item">${surprise}</div>`;
+    });
+
+    // Diary button
+    diaryBtn.addEventListener('click', () => {
+        diaryContent.style.display = diaryContent.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Things to Know Button Functionality
+    const knowMessages = [
+        `<div class="poetic-message">
+            <p class="message-title">Your smile...</p>
+            <p>>>> Sunrise over ocean</p>
+            <p>>>> First Manali snowfall</p>
+            <p>>>> Cherry blossoms of Japan</p>
+            <p>>>> Any other occasion</p>
+            <p class="signature">- Truth</p>
+        </div>`,
+        
+        `<div class="poetic-message">
+            <p class="message-title">Your eyes...</p>
+            <p>>>> A sky full of stars</p>
+            <p>>>> The deepest oceans</p>
+            <p>>>> Sunset reflections on a lake</p>
+            <p>>>> The universe itself</p>
+            <p class="signature">- Fact</p>
+        </div>`,
+        
+        `<div class="poetic-message">
+            <p class="message-title">Your voice...</p>
+            <p>>>> Birds singing in spring</p>
+            <p>>>> The sweetest songs of Atif Aslam</p>
+            <p>>>> Angelic choirs</p>
+            <p>>>> Healing melodies</p>
+            <p class="signature">- Reality</p>
+        </div>`,
+        
+        `<div class="poetic-message">
+            <p class="message-title">Your picture...</p>
+            <p>>>> Goddesses of mythologies</p>
+            <p>>>> Miss Universe winners</p>
+            <p>>>> Top models</p>
+            <p>>>> Any random apsara from heaven</p>
+            <p class="signature">- Universal Truth</p>
+        </div>`
+    ];
+
+    let shownKnowMessages = [];
+
+    let isFirstClick = true;
+
+    knowBtn.addEventListener('click', function() {
+        // Add pulse animation
+        this.classList.add('pulse');
+        setTimeout(() => this.classList.remove('pulse'), 500);
+
+        // Change button text after first click
+        if (isFirstClick) {
+            this.innerHTML = `
+                <span class="heart-icon">💖</span>
+                Click Again
+                <span class="sparkle">✨</span>
+            `;
+            isFirstClick = false;
+        }
+        
+        // If all messages have been shown
+        if (shownKnowMessages.length === knowMessages.length) {
+            isFirstClick = true;
+            shownKnowMessages = [];
+            knowContainer.innerHTML = `
+                <div class="poetic-message">
+                    <p>That's all for now...</p>
+                    <p>But my admiration for you, Miss Mukherjee,</p>
+                    <p>outshines all these comparisons combined</p>
+                    <p class="signature">- Forever Yours</p>
+                </div>
+            `;
+            createPetals(30);
+            return;
+        }
+        
+        // Get random unseen message
+        const availableMessages = knowMessages.filter((_, index) => !shownKnowMessages.includes(index));
+        const randomIndex = Math.floor(Math.random() * availableMessages.length);
+        shownKnowMessages.push(knowMessages.indexOf(availableMessages[randomIndex]));
+        
+        // Display message
+        knowContainer.style.opacity = '1';
+        knowContainer.innerHTML = availableMessages[randomIndex];
+        
+        // Create effects
+        createFloatingElement('💖');
+        setTimeout(() => createFloatingElement('✨'), 300);
+    });
+
+    // Create floating element function
+    function createFloatingElement(text) {
+        const element = document.createElement('div');
+        element.className = 'heart';
+        element.textContent = text;
+        element.style.left = Math.random() * 100 + 'vw';
+        document.body.appendChild(element);
+        setTimeout(() => element.remove(), 6000);
+    }
+
+    // Create petal effect function
+    function createPetals(count) {
+        const petalEmojis = ['🌸', '🌺', '🌹', '💐'];
+        for (let i = 0; i < count; i++) {
             setTimeout(() => {
-                createFloatingElement(['🎉', '🎊', '💫', '🌠', '🌈'][Math.floor(Math.random() * 5)]);
-            }, i * 50);
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+                petal.style.left = Math.random() * window.innerWidth + 'px';
+                petal.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                document.body.appendChild(petal);
+                
+                setTimeout(() => petal.remove(), 6000);
+            }, i * 100);
         }
+    }
+
+    // Wish fountain functionality
+    const defaultWishes = [
+        "I wish to see your smile every day",
+        "I wish to hear your voice more often",
+        "I wish to make you happy always",
+        "I wish to share more moments with you",
+        "I wish to be the reason for your joy",
+        "I wish to create beautiful memories together"
+    ];
+
+    let activeWishes = [];
+
+    function createRipple(x, y) {
+        const ripple = document.createElement('div');
+        ripple.className = 'ripple';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        wishesContainer.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 2000);
+    }
+
+    function createSparkle(x, y) {
+        const colors = ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98'];
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = x + 'px';
+        sparkle.style.top = y + 'px';
+        sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        wishesContainer.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1500);
+    }
+
+    function createWish(wishText, isCustom = false) {
+        const wish = document.createElement('div');
+        wish.className = 'wish';
+        wish.textContent = wishText;
+        wish.setAttribute('data-custom', isCustom);
         
-        // Change button appearance temporarily
-        this.textContent = 'Surprise!';
-        this.style.background = 'linear-gradient(45deg, #ff9966, #ff5e62)';
-        setTimeout(() => {
-            this.textContent = 'Click Again!';
-            this.style.background = 'linear-gradient(45deg, #ff66b3, #d23c77)';
-        }, 1500);
-    });
-
-    // Music player functionality
-    musicBtn.addEventListener('click', function() {
-        if (bgMusic.paused) {
-            bgMusic.play();
-            this.textContent = 'Pause Music 🎵';
-        } else {
-            bgMusic.pause();
-            this.textContent = 'Play Music 🎵';
-        }
-    });
-
-    // Create initial floating elements
-    setInterval(() => {
-        createFloatingElement(['💖', '🌸', '🌹'][Math.floor(Math.random() * 3)]);
-    }, 1500);
-
-    // Add some initial elements
-    for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-            createFloatingElement('💖');
-        }, i * 300);
-    }
-});
-
-// Surprise button functionality
-const surpriseBtn = document.getElementById('surpriseBtn');
-const surpriseContainer = document.getElementById('surpriseContainer');
-
-const surprises = [
-    "Did you know? The moment you enter the class room, my heart rate increases by 200%.",
-    "Fun fact: I've memorized 10 different languages to propose you.",
-    "Here's a secret: I practice conversations with you in my mirror.",
-    "Confession: I still remember and smile over the first conversation we had in person.",
-    "Truth: Your voice is my favorite notification sound.",
-    "Observation: You love changing your instagram profile pictures.",
-    "Memory: That time you came to my bench to take submission of my practical notebook.. truly a moment to cherish.",
-    "Noticed: You always smell like vanilla and sunshine, even on rainy days (felt it when you passed by).",
-    "Discovery: Your smile has exactly 3 phases - polite, genuine, and the one that crinkles your eyes."
-];
-
-let usedSurprises = [];
-
-surpriseBtn.addEventListener('click', function() {
-    // Reset if all surprises have been shown
-    if (usedSurprises.length === surprises.length) {
-        usedSurprises = [];
-        surpriseContainer.innerHTML = '<div class="surprise-item">No more surprises... just like there\'s no one else like you, Miss Mukherjee.</div>';
-        createHearts(30);
-        return;
-    }
-
-    // Get a random surprise not shown yet
-    let availableSurprises = surprises.filter(s => !usedSurprises.includes(s));
-    const randomSurprise = availableSurprises[Math.floor(Math.random() * availableSurprises.length)];
-    usedSurprises.push(randomSurprise);
-
-    // Display the surprise
-    surpriseContainer.style.display = 'block';
-    surpriseContainer.innerHTML = `<div class="surprise-item">${randomSurprise}</div>`;
-    
-    // Create celebration effects
-    createConfetti(50);
-    createHearts(15);
-    
-    // Change button text temporarily
-    this.textContent = "Another Sweet Surprise?";
-    setTimeout(() => {
-        if (usedSurprises.length === surprises.length) {
-            this.textContent = "No More Secrets!";
-        } else {
-            this.textContent = "Click for Another Sweet Surprise";
-        }
-    }, 1500);
-});
-
-// Helper functions for effects
-function createConfetti(count) {
-    for (let i = 0; i < count; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.left = Math.random() * window.innerWidth + 'px';
-        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
-        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        document.body.appendChild(confetti);
+        const startX = Math.random() * 80 + 10;
+        wish.style.left = startX + '%';
+        
+        wish.addEventListener('mouseover', () => {
+            wish.classList.add('wish-glow');
+            for(let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const rect = wish.getBoundingClientRect();
+                    const x = rect.left + Math.random() * rect.width;
+                    const y = rect.top + Math.random() * rect.height;
+                    createSparkle(x, y);
+                }, i * 100);
+            }
+        });
+        
+        wish.addEventListener('mouseout', () => {
+            wish.classList.remove('wish-glow');
+        });
+        
+        wishesContainer.appendChild(wish);
+        activeWishes.push(wish);
         
         setTimeout(() => {
-            confetti.remove();
-        }, 3000);
+            const index = activeWishes.indexOf(wish);
+            if (index > -1) {
+                activeWishes.splice(index, 1);
+            }
+            wish.remove();
+        }, 8000);
+        
+        checkWishInteractions();
     }
-}
 
-function createHearts(count) {
-    for (let i = 0; i < count; i++) {
-        setTimeout(() => {
-            const heart = document.createElement('div');
-            heart.innerHTML = '💖';
-            heart.style.position = 'absolute';
-            heart.style.left = Math.random() * window.innerWidth + 'px';
-            heart.style.bottom = '-50px';
-            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            heart.style.animation = `floatUp ${(Math.random() * 2 + 2)}s ease-out forwards`;
-            document.body.appendChild(heart);
+    function checkWishInteractions() {
+        if (activeWishes.length >= 2) {
+            const customWishes = activeWishes.filter(w => w.getAttribute('data-custom') === 'true');
+            const defaultWishes = activeWishes.filter(w => w.getAttribute('data-custom') === 'false');
             
+            if (customWishes.length > 0 && defaultWishes.length > 0) {
+                createWishInteraction(customWishes[0], defaultWishes[0]);
+            }
+        }
+    }
+
+    function createWishInteraction(wish1, wish2) {
+        const rect1 = wish1.getBoundingClientRect();
+        const rect2 = wish2.getBoundingClientRect();
+        
+        const startX = rect1.left + rect1.width / 2;
+        const startY = rect1.top + rect1.height / 2;
+        const endX = rect2.left + rect2.width / 2;
+        const endY = rect2.top + rect2.height / 2;
+        
+        for(let i = 0; i < 10; i++) {
             setTimeout(() => {
-                heart.remove();
-            }, 3000);
-        }, i * 100);
+                const x = startX + (endX - startX) * (i / 10);
+                const y = startY + (endY - startY) * (i / 10);
+                createSparkle(x, y);
+            }, i * 100);
+        }
+        
+        wish1.classList.add('wish-interaction');
+        wish2.classList.add('wish-interaction');
+        
+        setTimeout(() => {
+            wish1.classList.remove('wish-interaction');
+            wish2.classList.remove('wish-interaction');
+        }, 1000);
     }
-}
 
-// Things to Know Button Functionality
+    makeWishBtn.addEventListener('click', function() {
+        const rect = wishesContainer.getBoundingClientRect();
+        const x = Math.random() * rect.width;
+        const y = rect.height - 20;
+        createRipple(x, y);
+        
+        const customWish = prompt('Make your wish, or click OK for a magical wish:');
+        
+        let wish;
+        let isCustom = false;
+        
+        if (customWish && customWish.trim()) {
+            wish = customWish;
+            isCustom = true;
+        } else {
+            wish = defaultWishes[Math.floor(Math.random() * defaultWishes.length)];
+        }
+        
+        createWish(wish, isCustom);
+        
+        createFloatingElement('✨');
+        setTimeout(() => createFloatingElement('🌟'), 200);
+        setTimeout(() => createFloatingElement('💫'), 400);
+    });
 
+    // Garden functionality
+    const flowerTypes = [
+        { emoji: '🌸', name: 'Cherry Blossom' },
+        { emoji: '🌹', name: 'Rose' },
+        { emoji: '🌺', name: 'Hibiscus' },
+        { emoji: '🌻', name: 'Sunflower' },
+        { emoji: '🌼', name: 'Daisy' },
+        { emoji: '💐', name: 'Bouquet' },
+        { emoji: '🌷', name: 'Tulip' }
+    ];
+    let flowerCount = 0;
 
-// Things to Know Button Functionality
-const knowBtn = document.getElementById('knowBtn');
-const knowContainer = document.getElementById('knowContainer');
+    function createFlower() {
+        if (flowerCount >= 20) {
+            const notification = document.createElement('div');
+            notification.className = 'garden-notification';
+            notification.textContent = 'The garden is full of beautiful flowers! 🌸';
+            flowersContainer.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+            return;
+        }
 
-const knowMessages = [
-    `<div class="poetic-message">
-        <p class="message-title">Your smile...</p>
-        <p>>>> Sunrise over ocean</p>
-        <p>>>> First Manali snowfall</p>
-        <p>>>> Cherry blossoms of Japan</p>
-        <p>>>> Any other occasion</p>
-        <p class="signature">- Truth</p>
-    </div>`,
-    
-    `<div class="poetic-message">
-        <p class="message-title">Your eyes...</p>
-        <p>>>> A sky full of stars</p>
-        <p>>>> The deepest oceans</p>
-        <p>>>> Sunset reflections on a lake</p>
-        <p>>>> The universe itself</p>
-        <p class="signature">- Fact</p>
-    </div>`,
-    
-    `<div class="poetic-message">
-        <p class="message-title">Your voice...</p>
-        <p>>>> Birds singing in spring</p>
-        <p>>>> The sweetest songs of Atif Aslam</p>
-        <p>>>> Angelic choirs</p>
-        <p>>>> Healing melodies</p>
-        <p class="signature">- Reality</p>
-    </div>`,
-    
-    `<div class="poetic-message">
-        <p class="message-title">Your picture...</p>
-        <p>>>> Goddesses of mythologies</p>
-        <p>>>> Miss Universe winners</p>
-        <p>>>> Top models</p>
-        <p>>>> Any random apsara from heaven</p>
-        <p class="signature">- Universal Truth</p>
-    </div>`
-];
+        const flower = document.createElement('div');
+        const selectedFlower = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
+        flower.className = 'flower';
+        flower.setAttribute('aria-label', selectedFlower.name);
+        flower.innerHTML = selectedFlower.emoji;
+        
+        // Add tooltip with flower name
+        const tooltip = document.createElement('div');
+        tooltip.className = 'flower-tooltip';
+        tooltip.textContent = selectedFlower.name;
+        flower.appendChild(tooltip);
+        
+        flower.addEventListener('mouseover', () => {
+            tooltip.style.opacity = '1';
+            createSparkleEffect(flower);
+        });
+        
+        flower.addEventListener('mouseout', () => {
+            tooltip.style.opacity = '0';
+        });
 
-let shownKnowMessages = [];
+        // Random position within the container
+        const x = Math.random() * 80 + 10; // 10% to 90%
+        const y = Math.random() * 80 + 10; // 10% to 90%
+        flower.style.left = x + '%';
+        flower.style.top = y + '%';
 
-knowBtn.addEventListener('click', function() {
-    // Add pulse animation
-    this.classList.add('pulse');
-    setTimeout(() => this.classList.remove('pulse'), 500);
-    
-    // If all messages have been shown
-    if (shownKnowMessages.length === knowMessages.length) {
-        shownKnowMessages = [];
-        knowContainer.innerHTML = `
-            <div class="poetic-message">
-                <p>That's all for now...</p>
-                <p>But my admiration for you, Miss Mukherjee,</p>
-                <p>outshines all these comparisons combined</p>
-                <p class="signature">- Forever Yours</p>
-            </div>
-        `;
-        createPetals(30);
-        return;
+        // Add growth animation
+        flower.style.transform = 'scale(0)';
+        flowersContainer.appendChild(flower);
+
+        setTimeout(() => {
+            flower.style.transform = 'scale(1)';
+        }, 100);
+
+        flowerCount++;
+
+        // Add sparkle effect
+        for(let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = (x - 5 + Math.random() * 10) + '%';
+                sparkle.style.top = (y - 5 + Math.random() * 10) + '%';
+                flowersContainer.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1000);
+            }, i * 200);
+        }
     }
-    
-    // Get random unseen message
-    const availableMessages = knowMessages.filter((_, index) => !shownKnowMessages.includes(index));
-    const randomIndex = Math.floor(Math.random() * availableMessages.length);
-    shownKnowMessages.push(knowMessages.indexOf(availableMessages[randomIndex]));
-    
-    // Display message
-    knowContainer.style.display = 'block';
-    knowContainer.innerHTML = availableMessages[randomIndex];
-    
-    // Create effects
-    createPetals(20);
-    
-    // Change button text
-    this.innerHTML = `
-        <span class="heart-icon">💖</span>
-        ${shownKnowMessages.length === knowMessages.length ? 'No More Truths' : 'Another Beautiful Truth'}
-        <span class="sparkle">✨</span>
-    `;
+
+    plantFlowerBtn.addEventListener('click', createFlower);
 });
 
-knowBtn.addEventListener('click', function() {
-    // ... existing code ...
-    
-    // When showing message:
-    knowContainer.style.opacity = '1';
-    
-    // In the reset section:
-    knowContainer.style.opacity = '0.3';
-  });
+var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Create the player
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        videoId: 'K1W1jjo3_iU',
+        playerVars: {
+          'autoplay': 1,
+          'controls': 0,
+          'loop': 1,
+          'playlist': 'K1W1jjo3_iU',
+          'mute': 0,
+          'modestbranding': 1
+        },
+        events: {
+          'onReady': function (event) {
+            event.target.setVolume(30); // Adjust volume
+            event.target.playVideo();
+          }
+        }
+      });
+    }

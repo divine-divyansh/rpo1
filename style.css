@@ -3,9 +3,70 @@ body {
   margin: 0;
   height: 100vh;
   overflow-x: hidden;
-  background: linear-gradient(135deg, #ffe6f2, #ffccff);
-  font-family: 'Dancing Script', cursive;
+  background: linear-gradient(135deg, #f8e1e8, #ead5e7, #e3d5ea);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  font-family: 'Lora', Georgia, serif;
+  line-height: 1.6;
   position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50l-20-20 20-20 20 20-20 20z' fill='%23ffffff10'/%3E%3C/svg%3E");
+  opacity: 0.1;
+  pointer-events: none;
+  animation: shimmerBg 15s linear infinite;
+  z-index: 0;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Loading Animation */
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f8e1e8, #ead5e7, #e3d5ea);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.loading.fade-out {
+  opacity: 0;
+}
+
+.loading::after {
+  content: "Loading...";
+  font-family: 'Pacifico', cursive;
+  color: #9b4668;
+  font-size: 2em;
+  animation: loadingPulse 1.5s infinite, loadingFloat 3s ease-in-out infinite;
+}
+
+@keyframes loadingFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes loadingPulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 1; }
 }
 
 .container {
@@ -18,12 +79,14 @@ body {
 }
 
 .main-title {
-  color: #d23c77;
+  font-family: 'Dancing Script', cursive;
+  color: #8a3d5c;
   font-size: 3.5em;
   margin-bottom: 1.5rem;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
   transform: rotate(-2deg);
   animation: titleFloat 3s ease-in-out infinite alternate;
+  letter-spacing: 0.02em;
 }
 
 .interactive-section {
@@ -37,13 +100,16 @@ body {
   background: white;
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(210, 60, 119, 0.2);
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
   position: relative;
-  transition: transform 0.3s;
+  transition: all 0.3s;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .gift-box:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 15px 30px rgba(155, 70, 104, 0.3);
 }
 
 .ribbon {
@@ -52,12 +118,12 @@ body {
   right: 20px;
   width: 40px;
   height: 80px;
-  background: #ff66b3;
+  background: linear-gradient(135deg, #c06b96, #9b4668);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
 }
 
 .gift-button, .memory-button, .magic-button, .surprise-button {
-  background: linear-gradient(45deg, #ff66b3, #d23c77);
+  background: linear-gradient(45deg, #c06b96, #8a3d5c);
   color: white;
   border: none;
   padding: 0.8rem 1.5rem;
@@ -71,14 +137,35 @@ body {
 }
 
 .gift-message, .memory-text {
-  display: none;
-  margin-top: 1rem;
-  font-size: 1.3em;
-  color: #d23c77;
-  animation: fadeIn 0.5s forwards;
+  opacity: 0;
+  height: 0;
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #8a3d5c;
+  font-family: 'Lora', Georgia, serif;
+  line-height: 1.8;
+  padding: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
+
+.gift-message.show, .memory-text.show {
+  opacity: 1;
+  height: auto;
+  margin-top: 1rem;
+  padding: 15px;
+}
+
+.gift-message:hover, .memory-text:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.1);
+}
+
 .surprise-button {
-  background: linear-gradient(45deg, #ff6b6b, #ffa3a3);
+  background: linear-gradient(45deg, #b56d8c, #9b4668);
   color: white;
   border: none;
   padding: 1rem 2rem;
@@ -88,13 +175,13 @@ body {
   transition: all 0.3s;
   margin: 1rem auto;
   display: block;
-  font-family: 'Dancing Script', cursive;
-  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+  font-family: 'Pacifico', cursive;
+  box-shadow: 0 4px 8px rgba(181, 109, 140, 0.3);
 }
 
 .surprise-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 6px 12px rgba(181, 109, 140, 0.4);
 }
 
 .surprise-container {
@@ -109,209 +196,149 @@ body {
 
 .surprise-item {
   font-size: 1.3em;
-  color: #d23c77;
+  color: #8a3d5c;
   margin: 0.5rem 0;
   text-align: center;
 }
 
-@keyframes floatUp {
-  0% { transform: translateY(20px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+.section-divider {
+  height: 30px;
+  margin: 2rem 0;
+  background: linear-gradient(to right, transparent, rgba(155, 70, 104, 0.2), transparent);
+  position: relative;
 }
 
-.confetti {
+.section-divider::before {
+  content: '❀';
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #f00;
-  border-radius: 50%;
-  animation: confettiFall 3s linear forwards;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(155, 70, 104, 0.4);
+  font-size: 1.2em;
 }
 
-@keyframes confettiFall {
-  0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-}
-.secret-message {
-  background: linear-gradient(45deg, #ff66b3, #d23c77);
+.mood-board {
   padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
-  box-shadow: 0 0 25px rgba(210, 60, 119, 0.3);
-  margin: 2rem auto;
-  color: white;
-  grid-column: 1 / -1;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(155, 70, 104, 0.2);
+  box-shadow: 0 10px 30px rgba(155, 70, 104, 0.1);
+  transition: all 0.3s;
+  margin: 2rem 0;
 }
 
-.hidden-message {
-  display: none;
-  line-height: 1.8;
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-.polaroid-frame {
-  background: white;
-  padding: 1rem 1rem 3rem;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  transform: rotate(5deg);
-  width: 250px;
-  margin: 2rem auto;
-  grid-column: 1 / -1;
-}
-
-.polaroid-img {
-  height: 200px;
-  background: #f0f0f0;
-  margin-bottom: 1rem;
-  background-size: cover;
-  background-position: center;
-}
-
-.music-player {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-@keyframes titleFloat {
-  from { transform: rotate(-2deg) translateY(0); }
-  to { transform: rotate(-2deg) translateY(-10px); }
-}
-
-@keyframes float {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(-100vh) rotate(360deg); }
-}
-
-/* Heart elements */
-.heart {
-  position: absolute;
-  color: #ff3366;
-  animation: float 6s infinite;
-  opacity: 0;
-  pointer-events: none;
-  user-select: none;
-  font-size: 24px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .main-title { font-size: 2.5em; }
-  .interactive-section { grid-template-columns: 1fr; }
-}
-
-/* Things to Know Button Styling */
-.know-button {
-  background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-  color: #fff;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 30px;
-  font-size: 1.3em;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  margin: 1.5rem auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.mood-tile {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #8a3d5c;
   font-family: 'Dancing Script', cursive;
-  box-shadow: 0 5px 15px rgba(254, 152, 156, 0.4);
+  font-size: 1.5em;
+  background: linear-gradient(135deg, rgba(192, 107, 150, 0.1), rgba(155, 70, 104, 0.05));
+  border: 1px solid rgba(155, 70, 104, 0.2);
+  border-radius: 10px;
+  transition: all 0.3s ease-out;
+  cursor: pointer;
   position: relative;
   overflow: hidden;
-  border: 2px solid rgba(255,255,255,0.3);
 }
 
-.know-button:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 20px rgba(252, 156, 160, 0.6);
+.mood-tile::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(192, 107, 150, 0.1) 0%, transparent 70%);
+  transform: rotate(45deg);
+  animation: shineEffect 8s infinite;
 }
 
-.know-button:active {
-  transform: translateY(1px);
+.mood-tile:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(135deg, rgba(192, 107, 150, 0.2), rgba(155, 70, 104, 0.1));
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
 }
 
-.know-button .heart-icon, 
-.know-button .sparkle {
-  display: inline-block;
-  transition: all 0.3s;
+@keyframes shineEffect {
+  0% { transform: rotate(45deg) translateY(0); opacity: 0.3; }
+  50% { opacity: 0.7; }
+  100% { transform: rotate(45deg) translateY(-10%); opacity: 0.3; }
 }
 
-.know-button:hover .heart-icon {
-  transform: scale(1.3) rotate(15deg);
-}
-
-.know-button:hover .sparkle {
-  transform: scale(1.5);
-  filter: brightness(1.5);
-}
-
-/* Pulse animation */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-.know-button.pulse {
-  animation: pulse 0.5s ease;
-}
-
-/* Know container styling */
-.know-container {
-  min-height: 100px;
-  margin: 1rem auto;
-  padding: 1.5rem;
-  border-radius: 15px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,236,240,0.9) 100%);
-  display: block; /* Changed from 'none' to 'block' */
-  opacity: 0.3; /* Semi-transparent when empty */
-  transition: opacity 0.4s ease; /* Smooth transition when showing messages */
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  border: 1px solid rgba(255,192,203,0.5);
-  max-width: 80%;
+.diary-section {
   position: relative;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  margin: 2rem 0;
+  box-shadow: 0 10px 30px rgba(155, 70, 104, 0.1);
 }
-.placeholder-text {
-  color: rgba(210, 60, 119, 0.7); /* More vibrant pink */
-  text-align: center;
-  font-style: italic;
-  margin-top: 35px;
-  font-size: 1.2em;
-  text-shadow: 0 0 5px rgba(255,255,255,0.5); /* Soft glow */
-  font-family: 'Pacifico', cursive; /* Matches button font */
-}
-.know-container::before {
-  content: "";
+
+.diary-section::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 5px;
-  background: linear-gradient(90deg, #ff9a9e, #fad0c4);
-  border-radius: 15px 15px 0 0;
-}
-
-.know-item {
-  font-size: 1.3em;
-  color: #d23c77;
-  margin: 0.5rem 0;
-  text-align: center;
-  line-height: 1.6;
-  font-weight: 500;
-}
-
-/* Floating petal effect */
-.petal {
-  position: absolute;
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.7;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 0l10 10-10 10L0 10z' fill='%23c06b9610'/%3E%3C/svg%3E");
+  opacity: 0.1;
+  pointer-events: none;
   z-index: -1;
-  animation: floatPetal linear infinite;
+}
+
+.diary-button {
+  background: linear-gradient(135deg, #c06b96, #9b4668);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
+}
+
+.diary-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(155, 70, 104, 0.3);
+}
+
+.diary-content {
+  display: none;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  transition: all 0.3s;
+  margin-top: 1rem;
+}
+
+.entry-text {
+  font-family: 'Lora', serif;
+  line-height: 1.8;
+  color: #8a3d5c;
+}
+
+.rose-petal {
+  position: fixed;
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23c06b96' d='M12,1C7.03,1,3,5.03,3,10v3c0,4.97,4.03,9,9,9s9-4.03,9-9v-3C21,5.03,16.97,1,12,1z'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  animation: floatPetal 10s linear infinite;
 }
 
 @keyframes floatPetal {
@@ -330,26 +357,516 @@ body {
     opacity: 0;
   }
 }
-.poetic-message {
-  text-align: center;
-  line-height: 1.8;
-  color: #d23c77;
+
+@keyframes shimmerBg {
+  0% { transform: translateY(0) translateX(0); }
+  100% { transform: translateY(-100px) translateX(-100px); }
 }
 
-.poetic-message p {
-  margin: 0.3rem 0;
-  font-size: 1.2em;
+@keyframes titleFloat {
+  from { transform: rotate(-2deg) translateY(0); }
+  to { transform: rotate(-2deg) translateY(-10px); }
 }
 
-.message-title {
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+.heart {
+  position: absolute;
+  color: #b56d8c;
+  animation: float 6s infinite;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  font-size: 24px;
+}
+
+/* Things to Know Button and Container */
+.know-button {
+  background: linear-gradient(135deg, #c06b96 0%, #9b4668 100%);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1.3em;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 1.5rem auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Pacifico', cursive;
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.3);
+}
+
+.know-button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(155, 70, 104, 0.4);
+}
+
+.know-container {
+  min-height: 100px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,236,240,0.95) 100%);
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.1);
+  max-width: 80%;
+  transform: translateY(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(155, 70, 104, 0.2);
+}
+
+/* Song Info Styles */
+.song-info {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1000;
+}
+
+.song-info:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(155, 70, 104, 0.3);
+}
+
+.song-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.song-name {
+  color: #8a3d5c;
   font-weight: bold;
-  font-size: 1.4em !important;
-  margin-bottom: 0.8rem !important;
-  color: #ff3366;
+  font-size: 1.1em;
+  font-family: 'Dancing Script', cursive;
 }
 
-.signature {
-  font-style: italic;
-  margin-top: 1rem !important;
-  color: #f97474;
+.artist-name {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.mute-button {
+   background: none;
+   border: none;
+   font-size: 1.5em;
+   padding: 5px;
+}
+
+.footer {
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,236,240,0.7) 100%);
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 -5px 15px rgba(155, 70, 104, 0.1);
+}
+
+.footer p {
+    font-family: 'Dancing Script', cursive;
+    color: #8a3d5c;
+    font-size: 1.3em;
+    margin: 0.5rem 0;
+    text-shadow: 1px 1px 2px rgba(155, 70, 104, 0.1);
+    animation: fadeIn 1s ease-out;
+}
+
+.footer p:last-child {
+    font-size: 1.1em;
+    color: #b56d8c;
+}
+
+/* Polaroid Frame */
+.polaroid-frame {
+  background: white;
+  padding: 1rem 1rem 3rem;
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
+  transform: rotate(3deg);
+  width: 250px;
+  margin: 2rem auto;
+  transition: all 0.3s;
+  font-family: 'Dancing Script', cursive;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .interactive-section {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Garden notifications */
+  .garden-notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 30px;
+      border-radius: 30px;
+      box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
+      color: #8a3d5c;
+      font-family: 'Pacifico', cursive;
+      animation: notificationSlide 0.5s ease-out forwards;
+      z-index: 1000;
+  }
+  
+  @keyframes notificationSlide {
+      from {
+          transform: translate(-50%, 100%);
+          opacity: 0;
+      }
+      to {
+          transform: translate(-50%, 0);
+          opacity: 1;
+      }
+  }
+  
+  /* Flower tooltips */
+  .flower {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+  }
+  
+  .flower:hover {
+      transform: scale(1.1);
+  }
+  
+  .flower-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8em;
+      color: #8a3d5c;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(155, 70, 104, 0.2);
+      font-family: 'Lora', serif;
+  }
+  
+  /* Improved wish fountain animations */
+  .wish {
+      position: absolute;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 3px 10px rgba(155, 70, 104, 0.2);
+      animation: wishFloat 8s linear forwards;
+      transition: all 0.3s;
+  }
+  
+  @keyframes wishFloat {
+      0% {
+          bottom: 0;
+          transform: scale(0);
+          opacity: 0;
+      }
+      10% {
+          transform: scale(1);
+          opacity: 1;
+      }
+      90% {
+          opacity: 1;
+      }
+      100% {
+          bottom: 100%;
+          opacity: 0;
+      }
+  }
+  
+  .wish-glow {
+      box-shadow: 0 0 20px rgba(192, 107, 150, 0.4);
+      background: rgba(255, 255, 255, 0.95);
+      transform: scale(1.05);
+  }
+  
+  .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkleFloat 1.5s ease-out forwards;
+  }
+  
+  @keyframes sparkleFloat {
+      0% {
+          transform: scale(0) rotate(0deg);
+          opacity: 1;
+      }
+      100% {
+          transform: scale(2) rotate(180deg);
+          opacity: 0;
+      }
+  }
+  
+  /* Progressive loading */
+  .interactive-section > div,
+  .diary-section,
+  .fountain-section,
+  .mood-board,
+  .garden-section {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: sectionFadeIn 0.5s ease-out forwards;
+  }
+  
+  @keyframes sectionFadeIn {
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+  
+  .interactive-section > div:nth-child(1) { animation-delay: 0.2s; }
+  .interactive-section > div:nth-child(2) { animation-delay: 0.4s; }
+  .interactive-section > div:nth-child(3) { animation-delay: 0.6s; }
+  .diary-section { animation-delay: 0.8s; }
+  .fountain-section { animation-delay: 1s; }
+  .mood-board { animation-delay: 1.2s; }
+  .garden-section { animation-delay: 1.4s; }
+  
+  .main-title {
+    font-size: 2.5em;
+  }
+  
+  .gift-button, .memory-button, .magic-button, .surprise-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1em;
+  }
+  
+  .know-container {
+    max-width: 95%;
+  }
+  
+  .song-info {
+    top: auto;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+/* Accessibility improvements */
+.gift-button, .memory-button, .magic-button, .surprise-button,
+.diary-button, .know-button, .mute-button {
+  aria-label: attr(data-label);
+  role: "button";
+  tabindex: "0";
+}
+
+.gift-message, .memory-text, .diary-content {
+  role: "region";
+  aria-live: "polite";
+}
+
+.polaroid-frame:hover {
+  transform: rotate(0deg) translateY(-5px);
+  box-shadow: 0 8px 25px rgba(155, 70, 104, 0.3);
+}
+
+.polaroid-img {
+  height: 200px;
+  background: linear-gradient(135deg, #f8e1e8, #ead5e7);
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+.polaroid-frame p {
+  color: #8a3d5c;
+  font-size: 1.2em;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Section Title */
+.section-title {
+  font-family: 'Dancing Script', cursive;
+  color: #8a3d5c;
+  font-size: 2.5em;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(155, 70, 104, 0.1);
+}
+
+.know-container.active {
+  opacity: 1;
+  transform: translateY(0);
+  box-shadow: 0 8px 25px rgba(155, 70, 104, 0.2);
+}
+
+/* Wish Fountain Styles */
+.fountain-section {
+  position: relative;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8e1e8 0%, #ead5e7 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(155, 70, 104, 0.1);
+}
+
+.fountain-button {
+  background: linear-gradient(45deg, #c06b96, #9b4668);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Pacifico', cursive;
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
+  display: block;
+  margin: 0 auto;
+}
+
+.fountain-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(155, 70, 104, 0.3);
+}
+
+.wishes-container {
+  min-height: 200px;
+  position: relative;
+  margin-top: 2rem;
+}
+
+.wish {
+  position: absolute;
+  opacity: 0;
+  color: #8a3d5c;
+  text-shadow: 0 0 5px rgba(255,255,255,0.5);
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 10px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  animation: floatWish 8s ease-in-out forwards;
+}
+
+@keyframes floatWish {
+  0% { transform: translateY(100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+
+/* Garden Styles */
+.garden-section {
+  position: relative;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(155, 70, 104, 0.2);
+  box-shadow: 0 10px 30px rgba(155, 70, 104, 0.1);
+}
+
+.garden-button {
+  background: linear-gradient(45deg, #c06b96, #9b4668);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
+}
+
+.garden-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(155, 70, 104, 0.3);
+}
+
+.flowers-container {
+  min-height: 200px;
+  position: relative;
+  margin-top: 2rem;
+}
+
+.flower {
+  position: absolute;
+  font-size: 2em;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.flower:hover {
+  transform: scale(1.2);
+}
+
+/* Special Message Button */
+.magic-button {
+  background: linear-gradient(45deg, #c06b96, #8a3d5c);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Pacifico', cursive;
+  margin: 1rem auto;
+  display: block;
+  box-shadow: 0 5px 15px rgba(155, 70, 104, 0.2);
+}
+
+.magic-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(155, 70, 104, 0.3);
+}
+
+.secret-message {
+  background: linear-gradient(45deg, #c06b96, #8a3d5c);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(155, 70, 104, 0.2);
+  color: white;
+  margin: 2rem auto;
+  max-width: 80%;
+}
+
+.hidden-message {
+  display: none;
+  line-height: 1.8;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.2em;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
