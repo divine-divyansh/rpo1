@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => welcomeOverlay.remove(), 1000);
     });
     // Add section dividers
-    const sections = document.querySelectorAll('.interactive-section, .diary-section, .fountain-section, .mood-board, .garden-section');
+    const sections = document.querySelectorAll('.interactive-section, .diary-section, .mood-board, .garden-section');
     sections.forEach(section => {
         const divider = document.createElement('div');
         divider.className = 'section-divider';
@@ -56,15 +56,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const gift1 = document.getElementById('gift1');
     const gift2 = document.getElementById('gift2');
     const memory1 = document.getElementById('memory1');
-    const mainButton = document.getElementById('mainButton');
     const surpriseBtn = document.getElementById('surpriseBtn');
     const surpriseContainer = document.getElementById('surpriseContainer');
     const diaryBtn = document.getElementById('diaryBtn');
     const diaryContent = document.getElementById('diaryContent');
     const knowBtn = document.getElementById('knowBtn');
     const knowContainer = document.getElementById('knowContainer');
-    const makeWishBtn = document.getElementById('makeWishBtn');
-    const wishesContainer = document.getElementById('wishesContainer');
     const plantFlowerBtn = document.getElementById('plantFlowerBtn');
     const flowersContainer = document.getElementById('flowersContainer');
 
@@ -87,12 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     memoryButton.addEventListener('click', () => {
         memoryText.classList.toggle('show');
-    });
-
-    // Special message button
-    mainButton.addEventListener('click', () => {
-        const message = document.querySelector('.secret-message .hidden-message');
-        message.style.display = 'block';
     });
 
     // Surprise button functionality
