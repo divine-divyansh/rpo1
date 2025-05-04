@@ -5,11 +5,24 @@ loading.className = 'loading';
 document.body.appendChild(loading);
 
 document.addEventListener('DOMContentLoaded', function() {
+    const welcomeOverlay = document.querySelector('.welcome-overlay');
+    const welcomeButton = document.querySelector('.welcome-button');
+    
+    // Add welcome-active class to body initially
+    document.body.classList.add('welcome-active');
+    
     // Remove loading screen after content loads
     setTimeout(() => {
         loading.classList.add('fade-out');
         setTimeout(() => loading.remove(), 500);
     }, 1500);
+
+    // Hide welcome overlay on button click
+    welcomeButton.addEventListener('click', () => {
+        welcomeOverlay.style.opacity = '0';
+        document.body.classList.remove('welcome-active');
+        setTimeout(() => welcomeOverlay.remove(), 1000);
+    });
     // Add section dividers
     const sections = document.querySelectorAll('.interactive-section, .diary-section, .fountain-section, .mood-board, .garden-section');
     sections.forEach(section => {
@@ -216,137 +229,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Wish fountain functionality
-    const defaultWishes = [
-        "I wish to see your smile every day",
-        "I wish to hear your voice more often",
-        "I wish to make you happy always",
-        "I wish to share more moments with you",
-        "I wish to be the reason for your joy",
-        "I wish to create beautiful memories together"
-    ];
+    // Mood board functionality
+    const moodTiles = document.querySelectorAll('.mood-tile');
+    const moodQuote = document.querySelector('.mood-quote');
+    const bengaliQuotes = {
+        "happy": "Tomar hashi amar jibone alo niye ashe",
+        "peaceful": "Tomar uposthiti amar hridoye shanti niye ashe",
+        "dreamy": "Tomar chokher basha amar swopner thikana",
+        "loving": "Tomar prem amar jibone sobcheye sundor upohar"
+    };
 
-    let activeWishes = [];
-
-    function createRipple(x, y) {
-        const ripple = document.createElement('div');
-        ripple.className = 'ripple';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        wishesContainer.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 2000);
+    function typeWriter(element, text, speed = 50) {
+        let i = 0;
+        element.textContent = '';
+        element.style.opacity = '1';
+        
+        function type() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        
+        type();
     }
 
-    function createSparkle(x, y) {
-        const colors = ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98'];
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = x + 'px';
-        sparkle.style.top = y + 'px';
-        sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        wishesContainer.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1500);
-    }
-
-    function createWish(wishText, isCustom = false) {
-        const wish = document.createElement('div');
-        wish.className = 'wish';
-        wish.textContent = wishText;
-        wish.setAttribute('data-custom', isCustom);
-        
-        const startX = Math.random() * 80 + 10;
-        wish.style.left = startX + '%';
-        
-        wish.addEventListener('mouseover', () => {
-            wish.classList.add('wish-glow');
-            for(let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const rect = wish.getBoundingClientRect();
-                    const x = rect.left + Math.random() * rect.width;
-                    const y = rect.top + Math.random() * rect.height;
-                    createSparkle(x, y);
-                }, i * 100);
+    moodTiles.forEach(tile => {
+        tile.addEventListener('click', () => {
+            const mood = tile.getAttribute('data-mood');
+            const quote = bengaliQuotes[mood];
+            if (quote) {
+                moodQuote.classList.add('show');
+                typeWriter(moodQuote, quote);
             }
         });
-        
-        wish.addEventListener('mouseout', () => {
-            wish.classList.remove('wish-glow');
-        });
-        
-        wishesContainer.appendChild(wish);
-        activeWishes.push(wish);
-        
-        setTimeout(() => {
-            const index = activeWishes.indexOf(wish);
-            if (index > -1) {
-                activeWishes.splice(index, 1);
-            }
-            wish.remove();
-        }, 8000);
-        
-        checkWishInteractions();
-    }
-
-    function checkWishInteractions() {
-        if (activeWishes.length >= 2) {
-            const customWishes = activeWishes.filter(w => w.getAttribute('data-custom') === 'true');
-            const defaultWishes = activeWishes.filter(w => w.getAttribute('data-custom') === 'false');
-            
-            if (customWishes.length > 0 && defaultWishes.length > 0) {
-                createWishInteraction(customWishes[0], defaultWishes[0]);
-            }
-        }
-    }
-
-    function createWishInteraction(wish1, wish2) {
-        const rect1 = wish1.getBoundingClientRect();
-        const rect2 = wish2.getBoundingClientRect();
-        
-        const startX = rect1.left + rect1.width / 2;
-        const startY = rect1.top + rect1.height / 2;
-        const endX = rect2.left + rect2.width / 2;
-        const endY = rect2.top + rect2.height / 2;
-        
-        for(let i = 0; i < 10; i++) {
-            setTimeout(() => {
-                const x = startX + (endX - startX) * (i / 10);
-                const y = startY + (endY - startY) * (i / 10);
-                createSparkle(x, y);
-            }, i * 100);
-        }
-        
-        wish1.classList.add('wish-interaction');
-        wish2.classList.add('wish-interaction');
-        
-        setTimeout(() => {
-            wish1.classList.remove('wish-interaction');
-            wish2.classList.remove('wish-interaction');
-        }, 1000);
-    }
-
-    makeWishBtn.addEventListener('click', function() {
-        const rect = wishesContainer.getBoundingClientRect();
-        const x = Math.random() * rect.width;
-        const y = rect.height - 20;
-        createRipple(x, y);
-        
-        const customWish = prompt('Make your wish, or click OK for a magical wish:');
-        
-        let wish;
-        let isCustom = false;
-        
-        if (customWish && customWish.trim()) {
-            wish = customWish;
-            isCustom = true;
-        } else {
-            wish = defaultWishes[Math.floor(Math.random() * defaultWishes.length)];
-        }
-        
-        createWish(wish, isCustom);
-        
-        createFloatingElement('✨');
-        setTimeout(() => createFloatingElement('🌟'), 200);
-        setTimeout(() => createFloatingElement('💫'), 400);
     });
 
     // Garden functionality
@@ -424,29 +341,29 @@ document.addEventListener('DOMContentLoaded', function() {
     plantFlowerBtn.addEventListener('click', createFlower);
 });
 
-var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+// Initialize background music
+const bgMusic = new Audio('tera-hone-laga-hoon-668.mp3');
+bgMusic.loop = true;
+bgMusic.volume = 0.3;
 
-    // Create the player
-    var player;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('player', {
-        videoId: 'K1W1jjo3_iU',
-        playerVars: {
-          'autoplay': 1,
-          'controls': 0,
-          'loop': 1,
-          'playlist': 'K1W1jjo3_iU',
-          'mute': 0,
-          'modestbranding': 1
-        },
-        events: {
-          'onReady': function (event) {
-            event.target.setVolume(30); // Adjust volume
-            event.target.playVideo();
-          }
-        }
-      });
+const muteBtn = document.getElementById('muteBtn');
+let isMuted = false;
+
+muteBtn.addEventListener('click', () => {
+    if (isMuted) {
+        bgMusic.play();
+        muteBtn.textContent = '🔊';
+        isMuted = false;
+    } else {
+        bgMusic.pause();
+        muteBtn.textContent = '🔈';
+        isMuted = true;
     }
+});
+
+// Start playing when user interacts with the page
+document.addEventListener('click', () => {
+    if (!isMuted) {
+        bgMusic.play();
+    }
+}, { once: true });
