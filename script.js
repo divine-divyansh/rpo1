@@ -1,10 +1,19 @@
 
-// Add loading animation
-const loading = document.createElement('div');
-loading.className = 'loading';
-document.body.appendChild(loading);
+// Lock scrolling initially
+document.body.style.overflow = 'hidden';
+document.documentElement.style.overflow = 'hidden';
+
+// Handle loading animation
+window.addEventListener('load', function() {
+    const loadingScreen = document.querySelector('.loading');
+    setTimeout(() => {
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => loadingScreen.remove(), 500);
+    }, 1500);
+});
 
 document.addEventListener('DOMContentLoaded', function() {
+    document.body.classList.add('welcome-active');
     const welcomeOverlay = document.querySelector('.welcome-overlay');
     const welcomeButton = document.querySelector('.welcome-button');
     
@@ -17,11 +26,18 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => loading.remove(), 500);
     }, 1500);
 
-    // Hide welcome overlay on button click
     welcomeButton.addEventListener('click', () => {
-        welcomeOverlay.style.opacity = '0';
+        welcomeOverlay.classList.add('closing');
         document.body.classList.remove('welcome-active');
-        setTimeout(() => welcomeOverlay.remove(), 1000);
+        
+        // Wait for animation to complete before enabling scroll
+        setTimeout(() => {
+            welcomeOverlay.remove();
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+            // Fade in main content
+            document.querySelector('.container').style.animation = 'fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+        }, 1200);
     });
     // Add section dividers
     const sections = document.querySelectorAll('.interactive-section, .diary-section, .mood-board, .garden-section');
@@ -224,10 +240,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const moodTiles = document.querySelectorAll('.mood-tile');
     const moodQuote = document.querySelector('.mood-quote');
     const bengaliQuotes = {
-        "happy": "Tomar hashi amar jibone alo niye ashe",
-        "peaceful": "Tomar uposthiti amar hridoye shanti niye ashe",
-        "dreamy": "Tomar chokher basha amar swopner thikana",
-        "loving": "Tomar prem amar jibone sobcheye sundor upohar"
+        "love": "Tomar prem amar jibone sobcheye sundor upohar",
+        "peace": "Tomar uposthiti amar hridoye shanti niye ashe",
+        "dreams": "Tomar chokher basha amar swopner thikana",
+        "joy": "Tomar hashi amar jibone alo niye ashe"
     };
 
     function typeWriter(element, text, speed = 50) {
@@ -247,14 +263,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     moodTiles.forEach(tile => {
-        tile.addEventListener('click', () => {
+        // Handle both click and touch events
+        const showQuote = (e) => {
+            e.preventDefault();
             const mood = tile.getAttribute('data-mood');
             const quote = bengaliQuotes[mood];
             if (quote) {
+                // Remove show class from all tiles first
+                moodTiles.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tile
+                tile.classList.add('active');
                 moodQuote.classList.add('show');
                 typeWriter(moodQuote, quote);
             }
-        });
+        };
+
+        tile.addEventListener('click', showQuote);
+        tile.addEventListener('touchstart', showQuote, { passive: false });
+    });
+
+    // Close quote when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.mood-tile') && !e.target.closest('.mood-quote')) {
+            moodQuote.classList.remove('show');
+            moodTiles.forEach(tile => tile.classList.remove('active'));
+        }
     });
 
     // Garden functionality

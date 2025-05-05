@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="loading"></div>
     <div class="welcome-overlay">
         <div class="welcome-content">
             <h1>Shobaike Shoagotom</h1>
@@ -22,6 +23,14 @@
     <div class="container">
         <h1 class="main-title">For You, Miss Mukherjee 💝</h1>
         <p class="subtitle">Designed by Your Admirer</p>
+
+        <div class="song-info" id="mainSongInfo">
+            <div class="song-details">
+                <span class="song-name">Tera Hone Laga Hoon</span>
+                <span class="artist-name">by Atif Aslam</span>
+            </div>
+            <button id="muteBtn" class="mute-button">🔊</button>
+        </div>
         
         <div class="interactive-section">
             <div class="gift-box" id="gift1">
@@ -39,18 +48,11 @@
                 <button class="gift-button">Open Gift 2</button>
                 <div class="gift-message fade-in">
                     <p>"If I had to describe perfection,</p>
-                    <p>I'd simply say your name - Mukherjee.</p>
+                    <p>I'd simply say your name - Miss Mukherjee.</p>
                     <p>The way you light up every room is nothing short of magic." 🌸</p>
                 </div>
-                <div class="song-info">
-                    <div class="song-details">
-                        <span class="song-name">Tera Hone Laga Hoon</span>
-                        <span class="artist-name">by Atif Aslam</span>
-                    </div>
-                    <button id="muteBtn" class="mute-button">🔊</button>
-                </div>
             </div>
-            
+
             <div class="memory-lane">
                 <h2>Memory Lane</h2>
                 <div class="memory" id="memory1">
@@ -90,24 +92,24 @@
         <div class="mood-board">
             <h2 class="section-title">Today's Mood 🎨</h2>
             <div class="mood-grid" id="moodGrid">
-                <div class="mood-tile" data-mood="happy">
-                    <span class="mood-icon">✨</span>
-                    <span class="mood-text">Joy</span>
-                </div>
-                <div class="mood-tile" data-mood="peaceful">
-                    <span class="mood-icon">🌸</span>
-                    <span class="mood-text">Peace</span>
-                </div>
-                <div class="mood-tile" data-mood="dreamy">
-                    <span class="mood-icon">💫</span>
-                    <span class="mood-text">Dreams</span>
-                </div>
-                <div class="mood-tile" data-mood="loving">
+                <div class="mood-tile" data-mood="love">
                     <span class="mood-icon">💝</span>
                     <span class="mood-text">Love</span>
                 </div>
-                <div class="mood-quote"></div>
+                <div class="mood-tile" data-mood="peace">
+                    <span class="mood-icon">🌸</span>
+                    <span class="mood-text">Peace</span>
+                </div>
+                <div class="mood-tile" data-mood="dreams">
+                    <span class="mood-icon">💫</span>
+                    <span class="mood-text">Dreams</span>
+                </div>
+                <div class="mood-tile" data-mood="joy">
+                    <span class="mood-icon">✨</span>
+                    <span class="mood-text">Joy</span>
+                </div>
             </div>
+            <div class="mood-quote"></div>
         </div>
 
         <!-- Virtual Garden -->
